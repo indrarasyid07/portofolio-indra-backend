@@ -1,0 +1,56 @@
+[project]
+name = "portfolio-api"
+version = "0.1.0"
+description = "API dasar untuk situs portofolio Indra"
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "alembic==1.20.1",
+    "argon2-cffi==25.1.0",
+    "boto3==1.42.67",
+    "email-validator==2.4.0",
+    "fastapi==0.165.0",
+    "psycopg[binary]==3.3.9",
+    "pillow==12.1.1",
+    "pydantic-settings==2.16.3",
+    "sqlalchemy[asyncio]==2.1.9",
+    "uvicorn==0.54.0",
+]
+
+[dependency-groups]
+dev = [
+    "aiosqlite==0.22.1",
+    "httpx==0.28.1",
+    "mypy==2.4.1",
+    "pytest==9.2.0",
+    "pytest-asyncio==1.5.0",
+    "ruff==0.17.5",
+]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-q"
+pythonpath = ["."]
+asyncio_mode = "auto"
+asyncio_default_fixture_loop_scope = "function"
+
+[tool.ruff]
+line-length = 100
+target-version = "py312"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "B", "UP"]
+
+[tool.ruff.lint.per-file-ignores]
+"migrations/versions/*.py" = ["E501"]
+
+[tool.mypy]
+python_version = "3.12"
+strict = true
+files = ["app"]
+
+[tool.vercel]
+entrypoint = "app.main:app"
+
+[[tool.mypy.overrides]]
+module = ["boto3.*", "botocore.*"]
+ignore_missing_imports = true
